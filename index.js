@@ -4,6 +4,7 @@ const cors = require('cors')
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('dist'))
 
 let persons = [
     { 
@@ -33,9 +34,9 @@ const generateId = () => {
 };
 
 
-app.get('/', (request, response) => {
-    response.send('<h1>Phonebook</h1>')
-})
+// app.get('/', (request, response) => {
+//     response.send('<h1>Phonebook</h1>')
+// })
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
