@@ -1,10 +1,16 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const morgan = require('morgan')
+
+morgan.token('body', (req) => (
+    JSON.stringify(req.body)
+))
 
 app.use(express.json())
 app.use(cors())
 app.use(express.static('dist'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 let persons = [
     { 
@@ -30,13 +36,8 @@ let persons = [
 ]
 
 const generateId = () => {
-    return Math.floor(Math.random() * 10000).toString(); // Example ID generation
+    return Math.floor(Math.random() * 10000).toString(); 
 };
-
-
-// app.get('/', (request, response) => {
-//     response.send('<h1>Phonebook</h1>')
-// })
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
@@ -70,7 +71,6 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
     const person = request.body
-    console.log(person)
 
     if(!person.name || !person.number) {
         return response.status(400).json({
